@@ -6,7 +6,13 @@
     Public Function Sin(x As Double) As Double
         Return Math.Sin(x)
     End Function
+    Public Function ACos(x As Double) As Double
+        Return Math.Acos(x)
+    End Function
 
+    Public Function ASin(x As Double) As Double
+        Return Math.Asin(x)
+    End Function
     Public Function Tan(x As Double) As Double
         Return Math.Tan(x)
     End Function
