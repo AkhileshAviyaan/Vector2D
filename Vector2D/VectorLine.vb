@@ -75,13 +75,17 @@
 	Public Function GetPerpendicularDistance(v As Vector3D) As Double
 		Return GetPerpendicularDistance(v.X, v.Y)
 	End Function
+	Function Dist(x1 As Double, y1 As Double, X As Double, Y As Double) As Double
+		Return Sqrt(Pow(X - x1, 2) + Pow(Y - y1, 2))
+	End Function
 	Public Function IsIntersectPointLiesInside(v As Vector3D) As Boolean
-		Dim r1 = (X1 - v.X) / (X2 - v.X)
-		Dim r2 = (Y1 - v.Y) / (Y2 - v.Y)
-		If Abs(r1) > 1 Or Abs(r2) > 1 Then
-			Return False
-		Else
+		Dim d1 = Dist(X1, Y1, v.X, v.Y)
+		Dim d2 = Dist(X2, Y2, v.X, v.Y)
+		Dim d3 = Dist(X2, Y2, X1, Y1)
+		If Abs(d1 + d2 - d3) < 0.01 Then
 			Return True
+		Else
+			Return False
 		End If
 	End Function
 End Class
