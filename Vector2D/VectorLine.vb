@@ -10,6 +10,16 @@
 			Return Sqrt(Pow(DelX, 2) + Pow(DelY, 2))
 		End Get
 	End Property
+	ReadOnly Property DirCosineX As Double
+		Get
+			Return (X2 - X1) / Magnitude
+		End Get
+	End Property
+	ReadOnly Property DirCosineY As Double
+		Get
+			Return (Y2 - Y1) / Magnitude
+		End Get
+	End Property
 	Public Sub New()
 
 	End Sub
@@ -30,38 +40,39 @@
 	Public Sub New(vl As VectorLine, v As Vector3D)
 		Me.New(vl, v.X, v.Y)
 	End Sub
-	Public Function DotProduct(v2 As VectorLine)
+	Public Function DotProduct(v2 As VectorLine) As Double
 		Return DelX * v2.DelX + DelY * v2.DelY
 	End Function
-	Public Function CosAngleBetween(v2 As Vector3D)
+	Public Function CosAngleBetween(v2 As Vector3D) As Double
 		Dim vl As New VectorLine(Me, v2)
 		Return CosAngleBetween(vl)
 	End Function
-	Public Function SinAngleBetween(v2 As Vector3D)
+	Public Function SinAngleBetween(v2 As Vector3D) As Double
 		Dim vl As New VectorLine(Me, v2)
 		Return SinAngleBetween(vl)
 	End Function
-	Public Function CosAngleBetween(v2 As VectorLine)
+	Public Function CosAngleBetween(v2 As VectorLine) As Double
 		Return DotProduct(v2) / (Magnitude * v2.Magnitude)
 	End Function
-	Public Function SinAngleBetween(v2 As VectorLine)
+	Public Function SinAngleBetween(v2 As VectorLine) As Double
 		Dim CosA = CosAngleBetween(v2)
 		Dim A = ACos(CosA)
 		Return Sin(A)
 	End Function
-	Public Function GetPerpendicularDistance(x As Double, y As Double)
+	Public Function GetPerpendicularDistance(x As Double, y As Double) As Double
 		Dim vl As New VectorLine(Me, x, y)
 		Dim SinA = SinAngleBetween(vl)
 		Return vl.Magnitude * SinA
 	End Function
-	Public Function GetPerpendicularIntersectPoint(v As Vector3D)
+	Public Function GetPerpendicularIntersectPoint(v As Vector3D) As Vector3D
 		Dim vl As New VectorLine(Me, v.X, v.Y)
-		Dim SinA = SinAngleBetween(vl)
-		Dim DisX = vl.DelX * SinA
-		Dim DisY = vl.DelY * SinA
-		Return New Vector3D(X1 + DisX, Y1 + DisY, v.Z)
+		Dim CosA = CosAngleBetween(vl)
+		Dim projectedLength = vl.Magnitude * CosA
+		Dim diffx = projectedLength * DirCosineX
+		Dim diffy = projectedLength * DirCosineY
+		Return New Vector3D(X1 + diffx, Y1 + diffy, v.Z)
 	End Function
-	Public Function GetPerpendicularDistance(v As Vector3D)
-		GetPerpendicularDistance(v.X, v.Y)
+	Public Function GetPerpendicularDistance(v As Vector3D) As Double
+		Return GetPerpendicularDistance(v.X, v.Y)
 	End Function
 End Class

@@ -1,15 +1,14 @@
-﻿Module MathHelp
+﻿Imports System.Runtime.CompilerServices
+Module MathHelp
     Public Function Cos(x As Double) As Double
         Return Math.Cos(x)
     End Function
-
     Public Function Sin(x As Double) As Double
         Return Math.Sin(x)
     End Function
     Public Function ACos(x As Double) As Double
         Return Math.Acos(x)
     End Function
-
     Public Function ASin(x As Double) As Double
         Return Math.Asin(x)
     End Function
@@ -43,3 +42,16 @@
         Return Math.Abs(x)
     End Function
 End Module
+Module DoubleExtensions
+    <Extension()>
+    Public Function ToRadian(value As Double) As Double
+        Return value * PI / 180
+    End Function
+    <Extension()>
+    Public Function ToDegree(value As Double) As Double
+        Return value * 180 / PI
+    End Function
+End Module
+
+
+
